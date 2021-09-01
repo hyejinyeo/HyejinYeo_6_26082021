@@ -2,8 +2,11 @@
 const express = require('express');
 // Importer Mongoose
 const mongoose = require('mongoose');
+// Importer Router Sauce
+const sauceRoutes = require('./routes/sauce');
 
-// Créer un application
+
+// Créer une application
 const app = express();
 
 // Connecter à MongoDB
@@ -24,44 +27,8 @@ app.use((req, res, next) => {
 // Analyser le corps de la requête --> !!! Si cela ne fonctionne pas, il faut installer "body-parser" P1 C6 !!!
 app.use(express.json());
 
-// Middleware CRUD
-// Create
-app.post('/api/sauces', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({ message: 'Object created !'});
-});
-// Read
-app.get('/api/sauces', (req, res, next) => {
-    const sauce = [
-        {
-            name: 'Nom de la sauce',
-            manufacturer: 'Fabricant de la sauce',
-            description: 'Description de la sauce',
-            mainPepper: 'Le principal ingrédient épicé de la sauce',
-            imageUrl: '',
-            heat: 1,
-            likes: 2,
-            dislikes: 1,
-            userLiked: ['string <userId>'],
-            userDisliked: ['string <userId'],
-        },
-        {
-            name: 'Nom de la sauce',
-            manufacturer: 'Fabricant de la sauce',
-            description: 'Description de la sauce',
-            mainPepper: 'Le principal ingrédient épicé de la sauce',
-            imageUrl: '',
-            heat: 1,
-            likes: 2,
-            dislikes: 1,
-            userLiked: ['string <userId>'],
-            userDisliked: ['string <userId'],
-        }
-    ];
-    res.status(200).json(sauce);
-});
-// Update
-// Delete
+// Router Sauce
+app.use('/api/sauces', sauceRoutes);
 
 
 // Exporter l'application
