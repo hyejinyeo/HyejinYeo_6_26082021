@@ -6,18 +6,21 @@ const express = require('express');
 const router = express.Router();
 // Importer le controller Sauce
 const sauceCtrl = require('../controllers/sauce');
+// Importer la validator du toekn : Authentification
+const auth = require('../middleware/auth')
 
 
-/* Router CRUD pour SAUCE */
+
+/* Router pour SAUCE - CRUD */
 // Create
-router.post('/', sauceCtrl.createSauce);
+router.post('/', auth, sauceCtrl.createSauce);
 // Read
-router.get('/', sauceCtrl.getAllSauces);
-router.get('/:id', sauceCtrl.getOneSauce);
+router.get('/', auth, sauceCtrl.getAllSauces);
+router.get('/:id', auth, sauceCtrl.getOneSauce);
 // Update
-router.put('/:id', sauceCtrl.modifySauce);
+router.put('/:id', auth, sauceCtrl.modifySauce);
 // Delete
-router.delete('/:id', sauceCtrl.deleteSauce);
+router.delete('/:id', auth, sauceCtrl.deleteSauce);
 
 
 // Exporter le router
