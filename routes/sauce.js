@@ -8,17 +8,19 @@ const router = express.Router();
 const sauceCtrl = require('../controllers/sauce');
 // Importer la validator du toekn : Authentification
 const auth = require('../middleware/auth')
+// Importer le middleware multer
+const multer = require('../middleware/multer-config');
 
 
 
 /* Router pour SAUCE - CRUD */
 // Create
-router.post('/', auth, sauceCtrl.createSauce);
+router.post('/', auth, multer, sauceCtrl.createSauce);
 // Read
 router.get('/', auth, sauceCtrl.getAllSauces);
 router.get('/:id', auth, sauceCtrl.getOneSauce);
 // Update
-router.put('/:id', auth, sauceCtrl.modifySauce);
+router.put('/:id', auth, multer, sauceCtrl.modifySauce);
 // Delete
 router.delete('/:id', auth, sauceCtrl.deleteSauce);
 

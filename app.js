@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/user');
 // Importer Router Sauce
 const sauceRoutes = require('./routes/sauce');
+// Chemin
+const path = require('path');
 
 
 
@@ -31,6 +33,8 @@ app.use((req, res, next) => {
 // Analyser le corps de la requête --> !!! Si cela ne fonctionne pas, il faut installer "body-parser" P1 C6 !!!
 app.use(express.json());
 
+// Dossier images
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Router User
 app.use('/api/auth', userRoutes);
