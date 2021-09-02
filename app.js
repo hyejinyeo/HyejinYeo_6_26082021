@@ -1,6 +1,6 @@
-// Importer Express
+// Importer Express : Framework node.js
 const express = require('express');
-// Importer Mongoose
+// Importer Mongoose : Utilisation de la base de données Mongo DB
 const mongoose = require('mongoose');
 // Importer Router User
 const userRoutes = require('./routes/user');
@@ -8,9 +8,10 @@ const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 // Chemin
 const path = require('path');
-// Importer Helmet (aide à sécuriser les applications Express en définissant divers en-têtes HTTP.)
+// Importer Helmet 
 const helmet = require('helmet');
-
+// Sécurité - dotenv (aide à masquer les informations de connexion à la base de données - variables d'environnement) 
+require('dotenv').config();
 
 
 // Créer une application
@@ -18,9 +19,11 @@ const app = express();
 
 
 // Connecter à MongoDB
-mongoose.connect('mongodb+srv://HyejinYeo:wls745896@cluster0.zmhar.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
+mongoose
+  .connect(
+    process.env.DB_CONNECTION,
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
@@ -35,8 +38,9 @@ app.use((req, res, next) => {
 // Analyser le corps de la requête --> !!! Si cela ne fonctionne pas, il faut installer "body-parser" P1 C6 !!!
 app.use(express.json());
 
-// Sécurité - helmet
+// Sécurité - helmet (aide à sécuriser les applications Express en définissant divers en-têtes HTTP.)
 app.use(helmet());
+
 
 // Dossier images
 app.use('/images', express.static(path.join(__dirname, 'images')));
@@ -46,5 +50,6 @@ app.use('/api/auth', userRoutes);
 // Route Sauce
 app.use('/api/sauces', sauceRoutes);
 
-// Exporter l'application
+
+// Exporter l'application Express 
 module.exports = app;
