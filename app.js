@@ -2,23 +2,31 @@
 const express = require('express');
 // Importer Mongoose : Utilisation de la base de données Mongo DB
 const mongoose = require('mongoose');
-// Importer Router User
-const userRoutes = require('./routes/user');
-// Importer Router Sauce
-const sauceRoutes = require('./routes/sauce');
 // Chemin
 const path = require('path');
-// Importer Helmet 
+
+
+/* Sécurité */
+// Helmet : aide à sécuriser les applications Express en définissant divers en-têtes HTTP
 const helmet = require('helmet');
-// Sécurité - dotenv (aide à masquer les informations de connexion à la base de données - variables d'environnement) 
+//  Dotenv : aide à masquer les informations de connexion à la base de données - variables d'environnement
 require('dotenv').config();
+// Nocache : désactive la mise en cache du navigateur
+const nocache = require('nocache');
 
 
-// Créer une application
+/* Déclaration des routes */
+// User
+const userRoutes = require('./routes/user');
+// Sauce
+const sauceRoutes = require('./routes/sauce');
+
+
+/* Création d'une application Express */
 const app = express();
 
 
-// Connecter à MongoDB
+/* Connection à la base de données MongoDB */
 mongoose
   .connect(
     process.env.DB_CONNECTION,
@@ -27,7 +35,8 @@ mongoose
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// CORS
+
+// Middleware Header pour la sécurité CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -38,9 +47,9 @@ app.use((req, res, next) => {
 // Analyser le corps de la requête --> !!! Si cela ne fonctionne pas, il faut installer "body-parser" P1 C6 !!!
 app.use(express.json());
 
-// Sécurité - helmet (aide à sécuriser les applications Express en définissant divers en-têtes HTTP.)
+/* Sécurité */
 app.use(helmet());
-
+app.use(nocache());
 
 // Dossier images
 app.use('/images', express.static(path.join(__dirname, 'images')));
@@ -51,5 +60,5 @@ app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
 
 
-// Exporter l'application Express 
+/* Exporter l'application Express */
 module.exports = app;
