@@ -28,12 +28,12 @@ const app = express();
 
 /* Connection à la base de données MongoDB */
 mongoose
-  .connect(
-    process.env.DB_CONNECTION,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+    .connect(
+        process.env.DB_CONNECTION,
+        { useNewUrlParser: true, useUnifiedTopology: true }
+    )
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
 // Middleware Header pour la sécurité CORS
