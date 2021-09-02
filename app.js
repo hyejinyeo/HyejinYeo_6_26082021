@@ -8,6 +8,8 @@ const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 // Chemin
 const path = require('path');
+// Importer Helmet (aide à sécuriser les applications Express en définissant divers en-têtes HTTP.)
+const helmet = require('helmet');
 
 
 
@@ -33,12 +35,15 @@ app.use((req, res, next) => {
 // Analyser le corps de la requête --> !!! Si cela ne fonctionne pas, il faut installer "body-parser" P1 C6 !!!
 app.use(express.json());
 
+// Sécurité - helmet
+app.use(helmet());
+
 // Dossier images
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Router User
+// Route User
 app.use('/api/auth', userRoutes);
-// Router Sauce
+// Route Sauce
 app.use('/api/sauces', sauceRoutes);
 
 // Exporter l'application
