@@ -12,7 +12,6 @@ const auth = require('../middleware/auth')
 const multer = require('../middleware/multer-config');
 
 
-
 /* Router pour SAUCE - CRUD */
 // Create
 router.post('/', auth, multer, sauceCtrl.createSauce);
