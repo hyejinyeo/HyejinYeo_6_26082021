@@ -12,7 +12,8 @@ const auth = require('../middleware/auth')
 const multer = require('../middleware/multer-config');
 
 
-/* Router pour SAUCE - CRUD */
+/* Router pour SAUCE */
+// CRUD
 // Create
 router.post('/', auth, multer, sauceCtrl.createSauce);
 // Read
@@ -22,6 +23,9 @@ router.get('/:id', auth, sauceCtrl.getOneSauce);
 router.put('/:id', auth, multer, sauceCtrl.modifySauce);
 // Delete
 router.delete('/:id', auth, sauceCtrl.deleteSauce);
+
+// Like or Dislike
+router.post('/:id/like', auth, sauceCtrl.likeOrDislikeSauce);
 
 
 // Exporter le router
