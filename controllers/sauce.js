@@ -37,7 +37,7 @@ exports.getOneSauce = (req, res, next) => {
 // Update : Mettre à jour
 exports.modifySauce = (req, res, next) => {
     let sauceObject = {};
-    // Si la modification contient une nouvelle image, supprime l'ancienne du serveur et ajoute la nouvelle
+    // Si la modification contient une nouvelle image, supprime l'ancienne d'abord, puis ajoute la nouvelle
     req.file ? (
         Sauce.findOne({ _id: req.params.id })
             .then((sauce) => {
@@ -48,7 +48,7 @@ exports.modifySauce = (req, res, next) => {
                 ...JSON.parse(req.body.sauce),
                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
             }
-    // Sinon, applique la modification
+    // Sinon, applique la modification du corps de la requête
     ) : (sauceObject = { ...req.body })
     Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
         .then(() => res.status(200).json({ message: 'La sauce modifiée !' }))
