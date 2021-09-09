@@ -7,10 +7,11 @@ const jwt = require('jsonwebtoken');
 // Importer le modèle User
 const User = require('../models/User');
 
-/* Controller pour SAUCE */
+
+/* Controller pour USER */
 // S'inscrire
 exports.signup = (req, res, next) => {
-    // Crypter le mot de passe (hachage de 10 tours)
+    // Crypter le mot de passe (hachage de 10 tours = même effet de l'ajout de sel - automatiquement)
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             // Créer un nouvel utilisateur
@@ -25,6 +26,28 @@ exports.signup = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
+
+/* 
+--------------------------- Salt pour le mot de passe ---------------------------
+exports.signup = async (req, res, next) => {
+    try {
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+        const user = new User({
+            email: req.body.email,
+            password: hashedPassword
+        });
+        user.save()
+            .then(() => res.status(201).json({ message: 'Utilisateur crée !' }))
+            .catch(error => res.status(400).json({ error }));
+    }
+    catch (error) {
+        res.status(500).json({ error });
+    }
+};
+---------------------------------------------------------------------------------
+*/
+
 // Se connecter
 exports.login = (req, res, next) => {
     // Chercher l'utilisateur dans la base de données
