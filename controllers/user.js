@@ -7,12 +7,27 @@ const jwt = require('jsonwebtoken');
 // Importer le modèle User
 const User = require('../models/User');
 
+/* Sécurité */
+// Password-validator : 
+const passwordValidator = require('password-validator');
+const passwordSchema = new passwordValidator();
+passwordSchema
+.is().min(7)                                    
+.is().max(20)                                   
+.has().uppercase()                              
+.has().lowercase()                              
+.has().digits(1)                                
+.has().not().spaces()                           
+.is().not().oneOf(['Passw0rd', 'Password123', 'motdepasse1', 'motdepasse123']); 
+
 
 /* Controller pour USER */
 // S'inscrire
 exports.signup = (req, res, next) => {
-    // Crypter le mot de passe (hachage de 10 tours = même effet de l'ajout de sel - automatiquement)
-    bcrypt.hash(req.body.password, 10)
+    // Si le mot de passe est valide
+    if (passwordSchema.validate(req.body.password)) {
+        // Crypter le mot de passe (hachage de 10 tours = même effet de l'ajout de sel - automatiquement)
+        bcrypt.hash(req.body.password, 10)
         .then(hash => {
             // Créer un nouvel utilisateur
             const user = new User({
@@ -25,28 +40,22 @@ exports.signup = (req, res, next) => {
                 .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
+    }
+    // Si le mot de passe n'est pas valide 
+    else {
+        return res.status(400).json({ message: `
+            Format de mot de passe incorrect !
+            Le mot de passe :
+            - doit être d'une longueur minimale de 7
+            - doit être d'une longueur maximale de 20
+            - doit contenir un/des majuscule(s)
+            - doit contenir un/des minuscule(s)
+            - doit contenir au moins 1 chiffre
+            - ne doit pas contenir d'espace
+        ` });
+    } 
 };
 
-/* 
---------------------------- Salt pour le mot de passe ---------------------------
-exports.signup = async (req, res, next) => {
-    try {
-        const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(req.body.password, salt)
-        const user = new User({
-            email: req.body.email,
-            password: hashedPassword
-        });
-        user.save()
-            .then(() => res.status(201).json({ message: 'Utilisateur crée !' }))
-            .catch(error => res.status(400).json({ error }));
-    }
-    catch (error) {
-        res.status(500).json({ error });
-    }
-};
----------------------------------------------------------------------------------
-*/
 
 // Se connecter
 exports.login = (req, res, next) => {

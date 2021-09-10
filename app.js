@@ -1,8 +1,10 @@
+/*--------------------------------------- ENTRY APPLICATION : EXPRESS ---------------------------------------*/
+
 // Importer Express : Framework node.js
 const express = require('express');
 // Importer Mongoose : Utilisation de la base de données Mongo DB
 const mongoose = require('mongoose');
-// Chemin
+// Chemin de système de fichier
 const path = require('path');
 
 
