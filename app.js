@@ -11,11 +11,12 @@ const path = require('path');
 /* Sécurité */
 // Helmet : aide à sécuriser les applications Express en définissant divers en-têtes HTTP
 const helmet = require('helmet');
-//  Dotenv : aide à masquer les informations de connexion à la base de données - variables d'environnement
+// Dotenv : aide à masquer les informations de connexion à la base de données - variables d'environnement
 require('dotenv').config();
 // Nocache : désactive la mise en cache du navigateur
 const nocache = require('nocache');
-
+// Cookie-session : contrôle les cookies et les expire après la durée définie.
+const session = require('cookie-session');
 
 /* Déclaration des routes */
 // User
@@ -52,6 +53,17 @@ app.use(express.json());
 /* Sécurité */
 app.use(helmet());
 app.use(nocache());
+const expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 heure
+app.use(session({
+    name: 'session',
+    keys: ['key1', 'key2'],
+    cookie: { 
+        secure: true,                      // le cookie doit être envoyé uniquement via HTTPS
+        httpOnly: true,                    // le cookie doit uniquement être envoyé via HTTP(S) et n'est pas mis à la disposition du client JavaScript
+        domain: 'http://localhost:3000',   // le domaine du cookie
+        expires: expiryDate                // la date d'expiration du cookie
+    }
+}));
 
 // Dossier images
 app.use('/images', express.static(path.join(__dirname, 'images')));
