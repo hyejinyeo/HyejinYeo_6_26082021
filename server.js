@@ -1,3 +1,5 @@
+/*------------------------------------------- ENTRY POINT : SERVER -------------------------------------------*/
+
 // Importer le package HTTP de Node
 const http = require('http');
 // Importer l'application Express
@@ -16,10 +18,9 @@ const normalizePort = val => {
     return false;
 };
 
-// Ecouter les requêtes envoyées
 // process.env.PORT : Si la plateforme de déploiement propose un port par défaut
 // 3000 : Port par défaut sur notre plateforme de développement.
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort('3000');
 app.set('port', port);
 
 // (La fonction errorHandler recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur.)
@@ -54,5 +55,5 @@ server.on('listening', () => {
     console.log('Listening on ' + bind);
 });
 
+// Ecouter les requêtes envoyées
 server.listen(port);
-
