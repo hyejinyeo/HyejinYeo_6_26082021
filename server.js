@@ -18,7 +18,6 @@ const normalizePort = val => {
     return false;
 };
 
-// process.env.PORT : Si la plateforme de déploiement propose un port par défaut
 // 3000 : Port par défaut sur notre plateforme de développement.
 const port = normalizePort('3000');
 app.set('port', port);

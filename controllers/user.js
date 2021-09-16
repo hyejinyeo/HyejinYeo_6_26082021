@@ -26,7 +26,7 @@ passwordSchema
 exports.signup = (req, res, next) => {
     // Si le mot de passe est valide
     if (passwordSchema.validate(req.body.password)) {
-        // Crypter le mot de passe (hachage de 10 tours = même effet de l'ajout de sel - automatiquement)
+        // Crypter le mot de passe (hachage de 10 tours = même effet de l'ajout de sel)
         bcrypt.hash(req.body.password, 10)
         .then(hash => {
             // Créer un nouvel utilisateur

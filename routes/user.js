@@ -14,8 +14,8 @@ const rateLimit = require('express-rate-limit');
 // Ne permette pas de créer plus de 3 comptes par heure à partir de la même IP.
 const createAccountLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 heure
-    max: 3, // blockage après 3 requêtes
-    message: "Trop de comptes créés à partir de cette adresse IP. Veuillez réessayer après une heure."
+    max: 2, // blockage après 3 requêtes
+    message: 'Trop de comptes créés à partir de cette adresse IP. Veuillez réessayer après une heure.'
 });
 
 

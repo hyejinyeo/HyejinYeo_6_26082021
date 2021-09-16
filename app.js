@@ -4,7 +4,7 @@
 const express = require('express');
 // Importer Mongoose : Utilisation de la base de données Mongo DB
 const mongoose = require('mongoose');
-// Chemin de système de fichier
+// Donner un access au chemin 
 const path = require('path');
 
 
@@ -65,10 +65,11 @@ app.use(session({
     }
 }));
 
-// Dossier images
+// Utilisation du dossier images 
+// Cela indique à Express qu'il faut gérer la ressource images de manière statique (un sous-répertoire de notre répertoire de base, __dirname ) à chaque fois qu'elle reçoit une requête vers la route /images .
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Route User
+// Route User (Déclaration des routes: ligne 21-25)
 app.use('/api/auth', userRoutes);
 // Route Sauce
 app.use('/api/sauces', sauceRoutes);
